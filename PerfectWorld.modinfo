@@ -3,6 +3,16 @@
   <Properties>
     <Name>LOC_NAME</Name>
     <Teaser>LOC_TEASER</Teaser>
+	<Description>LOC_DESCRIPTION</Description>
+	<Authors>Rich Marinaccio **cephalo**, Ian Dilling</Authors>
+	<HideSetupGame>0</HideSetupGame>
+    <AffectsSavedGames>0</AffectsSavedGames>
+    <SupportsSinglePlayer>1</SupportsSinglePlayer>
+    <SupportsMultiplayer>0</SupportsMultiplayer>
+	<SupportsMac>1</SupportsMac>
+    <ReloadLandmarkSystem>0</ReloadLandmarkSystem>
+    <ReloadStrategicViewSystem>0</ReloadStrategicViewSystem>
+    <ReloadUnitSystem>0</ReloadUnitSystem>
   </Properties>
   <Settings>
     <Custom id="PERFECT_WORLD_CONFIG">
@@ -27,7 +37,10 @@
       <en_US>Perfect World</en_US>
     </Text>
     <Text id="LOC_TEASER">
-      <en_US>Perlin noise map script</en_US>
+      <en_US>Simulates climate based on geostrophic and monsoon wind patterns</en_US>
+    </Text>
+	<Text id="LOC_DESCRIPTION">
+      <en_US>Simulates climate based on a simplified model of geostrophic and monsoon wind patterns. Rivers are generated along accurate drainage paths governed by the elevation map used to create the landforms.</en_US>
     </Text>
   </LocalizedText>
 </Mod>
