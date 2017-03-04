@@ -2520,6 +2520,15 @@ function GeneratePlotTypes()
 
 end
 
+function IsAdjacentToLand(elevationMap, x, y)
+    for dir = 1, 5, 1 do
+        if not elevationMap:IsBelowSeaLevel(elevationMap:GetXYFromIndex(elevationMap:GetIndex(elevationMap:GetNeighbor(x, y, dir)))) then
+            return true
+        end
+    end
+    return false
+end
+
 function GenerateTerrain()
     print("Generating terrain - PerfectWorld3")
     local terrainDesert	= g_TERRAIN_TYPE_DESERT
@@ -2586,6 +2595,12 @@ function GenerateTerrain()
                     else
                         terrainTypes[i] = terrainGrass
                     end
+                end
+            else
+                if IsAdjacentToLand(elevationMap, x, y) then
+                    terrainTypes[i] = g_TERRAIN_TYPE_COAST
+                else
+                    terrainTypes[i] = g_TERRAIN_TYPE_OCEAN
                 end
             end
         end
@@ -2821,7 +2836,7 @@ end
 function ApplyTerrain(plotTypes, terrainTypes)
     local iW, iH = Map.GetGridSize()
     for i = 0, (iW * iH) - 1, 1 do
-        pPlot = Map.GetPlotByIndex(i)
+        local pPlot = Map.GetPlotByIndex(i)
         if (plotTypes[i] == g_PLOT_TYPE_HILLS) then
             terrainTypes[i] = terrainTypes[i] + 1
         elseif (plotTypes[i] == g_PLOT_TYPE_MOUNTAIN) then
