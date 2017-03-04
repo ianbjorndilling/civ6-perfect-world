@@ -2831,7 +2831,8 @@ function GenerateMap()
     mc = MapConstants:New()
     PWRandSeed()
 
-    elevationMap = GenerateElevationMap(gridWidth,gridHeight,true,false)
+    local iW, iH = Map.GetGridSize()
+    elevationMap = GenerateElevationMap(iW,iH,true,false)
     FillInLakes()
     --elevationMap:Save("elevationMap.csv")
 
@@ -2859,8 +2860,6 @@ function GenerateMap()
 
     StartPlotSystem();
 
-
-    local iW, iH = Map.GetGridSize()
     AddGoodies(iW, iH);
 
 end
