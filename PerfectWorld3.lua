@@ -2591,6 +2591,8 @@ function GenerateTerrain()
         end
     end
 
+    return terrainTypes
+
 end
 
 function FinishingTouches(plotTypes, terrainTypes)
@@ -2817,7 +2819,8 @@ function AddRivers()
 end
 
 function ApplyTerrain(plotTypes, terrainTypes)
-    for i = 0, (g_iW * g_iH) - 1, 1 do
+    local iW, iH = Map.GetGridSize()
+    for i = 0, (iW * iH) - 1, 1 do
         pPlot = Map.GetPlotByIndex(i)
         if (plotTypes[i] == g_PLOT_TYPE_HILLS) then
             terrainTypes[i] = terrainTypes[i] + 1
