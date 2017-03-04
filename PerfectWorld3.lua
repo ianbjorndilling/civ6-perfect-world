@@ -2597,6 +2597,8 @@ function FinishingTouches(plotTypes, terrainTypes)
     --now we fix things up so that the border of tundra and ice regions are hills
     --this looks a bit more believable. Also keep desert away from tundra and ice
     --by turning it into plains
+    local gridWidth, gridHeight = Map.GetGridSize();
+
     local terrainDesert	= g_TERRAIN_TYPE_DESERT
     local terrainPlains	= g_TERRAIN_TYPE_PLAINS
     local terrainSnow	= g_TERRAIN_TYPE_SNOW
