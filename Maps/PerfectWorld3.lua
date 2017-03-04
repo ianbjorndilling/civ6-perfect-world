@@ -2829,7 +2829,7 @@ function GenerateMap()
     AddFeatures()
 	AreaBuilder.Recalculate()
 	AddCliffs(plotTypes, terrainTypes)
-	
+
 	local nwGen = NaturalWonderGenerator.Create({
 		numberToPlace = GameInfo.Maps[Map.GetMapSize()].NumNaturalWonders,
 	});
@@ -2837,7 +2837,7 @@ function GenerateMap()
     AreaBuilder.Recalculate()
     TerrainBuilder.AnalyzeChokepoints()
     TerrainBuilder.StampContinents()
-	
+
 	resourcesConfig = MapConfiguration.GetValue("resources");
 	local resGen = ResourceGenerator.Create({
 		resources = resourcesConfig,
@@ -2848,7 +2848,7 @@ function GenerateMap()
 	local startConfig = MapConfiguration.GetValue("start");
     local start_plot_database = AssignStartingPlots.Create({
 		MIN_MAJOR_CIV_FERTILITY = 300,
-		MIN_MINOR_CIV_FERTILITY = 50, 
+		MIN_MINOR_CIV_FERTILITY = 50,
 		MIN_BARBARIAN_FERTILITY = 1,
 		START_MIN_Y = 15,
 		START_MAX_Y = 15,

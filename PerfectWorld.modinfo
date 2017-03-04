@@ -17,20 +17,20 @@
   <Settings>
     <Custom id="PERFECT_WORLD_CONFIG">
       <Items>
-        <File>Config.xml</File>
+        <File>Config/PerfectWorldConfig.xml</File>
       </Items>
     </Custom>
   </Settings>
   <Components>
     <ImportFiles id="PERFECT_WORLD_IMPORT">
       <Items>
-        <File>PerfectWorld3.lua</File>
+        <File>Maps/PerfectWorld3.lua</File>
       </Items>
     </ImportFiles>
   </Components>
   <Files>
-    <File>Config.xml</File>
-    <File>PerfectWorld3.lua</File>
+    <File>Config/PerfectWorldConfig.xml</File>
+    <File>Maps/PerfectWorld3.lua</File>
   </Files>
   <LocalizedText>
     <Text id="LOC_NAME">
