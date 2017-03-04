@@ -2834,8 +2834,8 @@ function GenerateMap()
     end
     --]]
 
-    GenerateTerrainTypes()
     GeneratePlotTypes()
+    GenerateTerrain()
 
     AreaBuilder.Recalculate()
 
