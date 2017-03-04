@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Mod id="123">
+  <Properties>
+    <Name>LOC_NAME</Name>
+    <Teaser>LOC_TEASER</Teaser>
+  </Properties>
+  <Settings>
+    <Custom id="PERFECT_WORLD_CONFIG">
+      <Items>
+        <File>Config.xml</File>
+      </Items>
+    </Custom>
+  </Settings>
+  <Components>
+    <ImportFiles id="PERFECT_WORLD_IMPORT">
+      <Items>
+        <File>PerfectWorld3.lua</File>
+      </Items>
+    </ImportFiles>
+  </Components>
+  <Files>
+    <File>Config.xml</File>
+    <File>PerfectWorld3.lua</File>
+  </Files>
+  <LocalizedText>
+    <Text id="LOC_NAME">
+      <en_US>Perlin's World</en_US>
+    </Text>
+    <Text id="LOC_TEASER">
+      <en_US>Perlin noise map script</en_US>
+    </Text>
+  </LocalizedText>
+</Mod>
