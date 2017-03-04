@@ -20,6 +20,9 @@
 
 include("MapEnums");
 include("MapUtilities");
+include("AssignStartingPlots")
+include("ResourceGenerator")
+include("NaturalWonderGenerator")
 include("MountainsCliffs");
 
 MapConstants = {}
@@ -2520,16 +2523,7 @@ function GeneratePlotTypes()
 
 end
 
-function IsAdjacentToLand(elevationMap, x, y)
-    for dir = 1, 5, 1 do
-        if not elevationMap:IsBelowSeaLevel(elevationMap:GetXYFromIndex(elevationMap:GetIndex(elevationMap:GetNeighbor(x, y, dir)))) then
-            return true
-        end
-    end
-    return false
-end
-
-function GenerateTerrain()
+function GenerateTerrain(plotTypes)
     print("Generating terrain - PerfectWorld3")
     local terrainDesert	= g_TERRAIN_TYPE_DESERT
     local terrainPlains	= g_TERRAIN_TYPE_PLAINS
@@ -2597,7 +2591,7 @@ function GenerateTerrain()
                     end
                 end
             else
-                if IsAdjacentToLand(elevationMap, x, y) then
+                if IsAdjacentToLand(plotTypes, x, y) then
                     terrainTypes[i] = g_TERRAIN_TYPE_COAST
                 else
                     terrainTypes[i] = g_TERRAIN_TYPE_OCEAN
@@ -2687,7 +2681,7 @@ function AddFeatures()
     print("Adding Features PerfectWorld3");
 
     local terrainPlains	= g_TERRAIN_TYPE_PLAINS
-    local featureFloodPlains = g_FEATURE_FLOOD_PLAINS
+    local featureFloodPlains = g_FEATURE_FLOODPLAINS
     local featureIce = g_FEATURE_ICE
     local featureJungle = g_FEATURE_JUNGLE
     local featureForest = g_FEATURE_FOREST
@@ -2744,46 +2738,6 @@ function AddFeatures()
             end
         end
     end
-end
-
-function StartPlotSystem()
-    -- Get Resources setting input by user.
-    local res = Map.GetCustomOption(2)
-    if res == 6 then
-        res = 1 + Map.Rand(3, "Random Resources Option - Lua");
-    end
-
-    local starts = Map.GetCustomOption(1)
-    local divMethod = nil
-    if starts == 1 then
-        divMethod = 2
-    else
-        divMethod = 1
-    end
-
-    print("Creating start plot database.");
-    local start_plot_database = AssignStartingPlots.Create()
-
-    print("Dividing the map in to Regions.");
-    -- Regional Division Method 2: Continental or 1:Terra
-    local args = {
-        method = divMethod,
-        resources = res,
-    };
-    start_plot_database:GenerateRegions(args)
-
-    print("Choosing start locations for civilizations.");
-    start_plot_database:ChooseLocations()
-
-    print("Normalizing start locations and assigning them to Players.");
-    start_plot_database:BalanceAndAssign()
-
-    --error(":P")
-    print("Placing Natural Wonders.");
-    start_plot_database:PlaceNaturalWonders()
-
-    print("Placing Resources and City States.");
-    start_plot_database:PlaceResourcesAndCityStates()
 end
 
 function AddRivers()
@@ -2866,19 +2820,41 @@ function GenerateMap()
     riverMap:SetRiverSizes(rainfallMap)
 
     local plotTypes = GeneratePlotTypes()
-    local terrainTypes = GenerateTerrain()
+    local terrainTypes = GenerateTerrain(plotTypes)
 
     FinishingTouches(plotTypes, terrainTypes)
     ApplyTerrain(plotTypes, terrainTypes)
 
     AddRivers()
     AddFeatures()
+	AreaBuilder.Recalculate()
+	AddCliffs(plotTypes, terrainTypes)
+	
+	local nwGen = NaturalWonderGenerator.Create({
+		numberToPlace = GameInfo.Maps[Map.GetMapSize()].NumNaturalWonders,
+	});
 
     AreaBuilder.Recalculate()
     TerrainBuilder.AnalyzeChokepoints()
     TerrainBuilder.StampContinents()
+	
+	resourcesConfig = MapConfiguration.GetValue("resources");
+	local resGen = ResourceGenerator.Create({
+		resources = resourcesConfig,
+		bLandBias = true,
+	});
 
-    StartPlotSystem();
+	print("Creating start plot database.");
+	local startConfig = MapConfiguration.GetValue("start");
+    local start_plot_database = AssignStartingPlots.Create({
+		MIN_MAJOR_CIV_FERTILITY = 300,
+		MIN_MINOR_CIV_FERTILITY = 50, 
+		MIN_BARBARIAN_FERTILITY = 1,
+		START_MIN_Y = 15,
+		START_MAX_Y = 15,
+		START_CONFIG = startConfig,
+		LAND = true,
+	})
 
     AddGoodies(iW, iH);
 
