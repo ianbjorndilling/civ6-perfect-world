@@ -2370,37 +2370,6 @@ function PlacePossibleIce(x,y)
     end
 end
 
-function PlacePossibleAtoll(x,y)
-    local shallowWater = GameDefines.SHALLOW_WATER_TERRAIN
-    local deepWater = GameDefines.DEEP_WATER_TERRAIN
-    local featureAtoll = nil
-    for thisFeature in GameInfo.Features() do
-        if thisFeature.Type == "FEATURE_ATOLL" then
-            featureAtoll = thisFeature.ID;
-        end
-    end
-    local plot = Map.GetPlot(x,y)
-    local i = temperatureMap:GetIndex(x,y)
-    if plot:GetTerrainType() == shallowWater then
-        local temp = temperatureMap.data[i]
-        local latitude = temperatureMap:GetLatitudeForY(y)
-        if latitude < mc.atollNorthLatitudeLimit and latitude > mc.atollSouthLatitudeLimit then
-            local tiles = elevationMap:GetRadiusAroundHex(x,y,1)
-            local deepCount = 0
-            for n=1,#tiles do
-                local xx = tiles[n][1]
-                local yy = tiles[n][2]
-                local nPlot = Map.GetPlot(xx,yy)
-                if nPlot:GetTerrainType() == deepWater then
-                    deepCount = deepCount + 1
-                end
-            end
-            if deepCount >= mc.atollMinDeepWaterNeighbors then
-                plot:SetFeatureType(featureAtoll,-1)
-            end
-        end
-    end
-end
 -------------------------------------------------------------------------------
 --functions that Civ needs
 -------------------------------------------------------------------------------

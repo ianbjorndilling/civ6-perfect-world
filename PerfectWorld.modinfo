@@ -3,13 +3,13 @@
   <Properties>
     <Name>LOC_NAME</Name>
     <Teaser>LOC_TEASER</Teaser>
-	<Description>LOC_DESCRIPTION</Description>
-	<Authors>Rich Marinaccio **cephalo**, Ian Dilling</Authors>
-	<HideSetupGame>0</HideSetupGame>
+    <Description>LOC_DESCRIPTION</Description>
+    <Authors>Rich Marinaccio **cephalo**, Ian Dilling</Authors>
+    <HideSetupGame>0</HideSetupGame>
     <AffectsSavedGames>0</AffectsSavedGames>
     <SupportsSinglePlayer>1</SupportsSinglePlayer>
     <SupportsMultiplayer>0</SupportsMultiplayer>
-	<SupportsMac>1</SupportsMac>
+    <SupportsMac>1</SupportsMac>
     <ReloadLandmarkSystem>0</ReloadLandmarkSystem>
     <ReloadStrategicViewSystem>0</ReloadStrategicViewSystem>
     <ReloadUnitSystem>0</ReloadUnitSystem>
