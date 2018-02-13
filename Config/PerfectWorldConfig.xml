@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GameInfo>
   <Maps>
-    <Row File="PerfectWorld3.lua" Name="Perfect World" Description="Perfect World for Civ 6" SortIndex="80" />
+    <Row Domain="Maps:Expansion1Maps" File="PerfectWorld3.lua" Name="Perfect World" Description="Perfect World for Civ 6" SortIndex="80" />
   </Maps>
 </GameInfo>
