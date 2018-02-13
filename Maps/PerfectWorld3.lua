@@ -38,6 +38,12 @@ function MapConstants:New()
     --Percent of dry land that is below the hill elevation deviance threshold.
     mconst.hillsPercent = 0.50
 
+    --Percent of dry land that is below the cliff elevation deviance threshold.
+    mconst.cliffsPercent = 0.40
+
+    --Percent of cliffs to "erode"
+    mconst.cliffBreakPct = 0.2
+
     --Percent of dry land that is below the mountain elevation deviance
     --threshold.
     mconst.mountainsPercent = 0.85
@@ -2437,7 +2443,7 @@ function GeneratePlotTypes()
 
     --now gen plot types
     print("Generating plot types - PerfectWorld3")
-    local diffMap = FloatMap:New(gridWidth,gridHeight,true,false)
+    diffMap = FloatMap:New(gridWidth,gridHeight,true,false)
     for y = 0, gridHeight - 1,1 do
         for x = 0,gridWidth - 1,1 do
             local i = diffMap:GetIndex(x,y)
@@ -2646,6 +2652,44 @@ function FinishingTouches(plotTypes, terrainTypes)
     end
 end
 ------------------------------------------------------------------------------
+
+-- Place cliffs where appropriate.
+-- "Appropriate" is defined as the edge of any coastal tile above the cliffs
+-- threshold. A certain percentage of such cliffs are then removed, to simulate
+-- erosion/rock slides/whatever might cause part of a sheer cliff to collapse
+-- into something passable.
+function PlacePotentialCliffs(cx, cy)
+    local cliffsThreshold = diffMap:FindThresholdFromPercent(mc.cliffsPercent,false,true)
+    local cplot = Map.GetPlot(cx, cy)
+    local wx, wy = diffMap:GetNeighbor(cx, cy, mc.W)
+    local nwx, nwy = diffMap:GetNeighbor(cx, cy, mc.NW)
+    local nex, ney = diffMap:GetNeighbor(cx, cy, mc.NE)
+    local wplot = Map.GetPlot(wx, wy)
+    local nwplot = Map.GetPlot(nwx, nwy)
+    local neplot = Map.GetPlot(nex, ney)
+    if diffMap.data[diffMap:GetIndex(cx, cy)] > cliffsThreshold then
+        if wplot ~= nil and wplot:IsWater() and PWRand() > mc.cliffBreakPct then
+            TerrainBuilder.SetWOfCliff(wplot, true)
+        end
+        if nwplot ~= nil and nwplot:IsWater() and PWRand() > mc.cliffBreakPct then
+            TerrainBuilder.SetNWOfCliff(nwplot, true)
+        end
+        if neplot ~= nil and neplot:IsWater() and PWRand() > mc.cliffBreakPct then
+            TerrainBuilder.SetNEOfCliff(neplot, true)
+        end
+    elseif cplot:IsWater() then
+        if wplot ~= nil and diffMap.data[diffMap:GetIndex(wx, wy)] > cliffsThreshold and PWRand() > mc.cliffBreakPct then
+            TerrainBuilder.SetWOfCliff(wplot, true)
+        end
+        if nwplot ~= nil and diffMap.data[diffMap:GetIndex(nwx, nwy)] > cliffsThreshold and PWRand() > mc.cliffBreakPct then
+            TerrainBuilder.SetNWOfCliff(nwplot, true)
+        end
+        if neplot ~= nil and diffMap.data[diffMap:GetIndex(nex, ney)] > cliffsThreshold and PWRand() > mc.cliffBreakPct then
+            TerrainBuilder.SetNEOfCliff(neplot, true)
+        end
+    end
+end
+
 function AddFeatures()
     print("Adding Features PerfectWorld3");
 
@@ -2695,6 +2739,7 @@ function AddFeatures()
                     TerrainBuilder.SetFeatureType(plot, featureFloodPlains)
                 end
             end
+            PlacePotentialCliffs(x, y)
         end
     end
     for y = 0, gridHeight - 1,1 do
