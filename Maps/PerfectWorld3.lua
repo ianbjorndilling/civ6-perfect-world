@@ -2658,8 +2658,7 @@ end
 -- threshold. A certain percentage of such cliffs are then removed, to simulate
 -- erosion/rock slides/whatever might cause part of a sheer cliff to collapse
 -- into something passable.
-function PlacePotentialCliffs(cx, cy)
-    local cliffsThreshold = diffMap:FindThresholdFromPercent(mc.cliffsPercent,false,true)
+function PlacePotentialCliffs(cx, cy, cliffsThreshold)
     local cplot = Map.GetPlot(cx, cy)
     local wx, wy = diffMap:GetNeighbor(cx, cy, mc.W)
     local nwx, nwy = diffMap:GetNeighbor(cx, cy, mc.NW)
@@ -2705,6 +2704,8 @@ function AddFeatures()
 
     local zeroTreesThreshold = rainfallMap:FindThresholdFromPercent(mc.zeroTreesPercent,false,true)
     local jungleThreshold = rainfallMap:FindThresholdFromPercent(mc.junglePercent,false,true)
+    local cliffsThreshold = diffMap:FindThresholdFromPercent(mc.cliffsPercent,false,true)
+
     --local marshThreshold = rainfallMap:FindThresholdFromPercent(marshPercent,false,true)
     for y = 0, gridHeight - 1,1 do
         for x = 0,gridWidth - 1,1 do
@@ -2739,7 +2740,7 @@ function AddFeatures()
                     TerrainBuilder.SetFeatureType(plot, featureFloodPlains)
                 end
             end
-            PlacePotentialCliffs(x, y)
+            PlacePotentialCliffs(x, y, cliffsThreshold)
         end
     end
     for y = 0, gridHeight - 1,1 do
