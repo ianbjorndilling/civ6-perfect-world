@@ -42,7 +42,7 @@ function MapConstants:New()
     mconst.cliffsPercent = 0.40
 
     --Percent of cliffs to "erode"
-    mconst.cliffBreakPct = 0.2
+    mconst.cliffBreakPct = 0.15
 
     --Percent of dry land that is below the mountain elevation deviance
     --threshold.
